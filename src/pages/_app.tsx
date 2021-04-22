@@ -8,9 +8,7 @@ import { Box, Flex } from '@chakra-ui/layout'
 function MyApp({ Component, pageProps }) {
   return (
     <ThemeContainer>
-      <Flex as='div'
-
-      >
+      <Flex as='div'>
         <Box as='main'
           flex='1'
         >
