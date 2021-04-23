@@ -1,6 +1,10 @@
 import { theme, extendTheme } from '@chakra-ui/react'
 
 export const customTheme = extendTheme({
+  config: {
+    initialColorMode: 'light',
+    useSystemColorMode: false,
+  },
   styles: {
     global: {
       '*': {

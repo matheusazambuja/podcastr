@@ -11,7 +11,7 @@ import { convertDurationToTimeString } from "../utils/convertDurationToTimeStrin
 import { Button } from "@chakra-ui/button"
 import { Image as ImageChakra } from "@chakra-ui/image"
 import { Box, Link as LinkChakra,ListItem, Text, UnorderedList } from "@chakra-ui/layout"
-import { Table, TableCellProps, TableColumnHeaderProps, Tbody, Td, Th, Thead, Tr } from "@chakra-ui/react"
+import { Table, TableCellProps, TableColumnHeaderProps, Tbody, Td, Th, Thead, Tr, useColorModeValue } from "@chakra-ui/react"
 import { usePlayer } from "../contexts/PlayerContext";
 
 // Pode ser feito com type ou interface
@@ -31,35 +31,48 @@ type HomeProps = {
   allEpisodes: Episode[];
 }
 
-const styleTh: TableColumnHeaderProps = {
-  padding: '0.75rem 1rem',
-  borderBottom: '1px solid',
-  borderColor: 'gray.100',
-  color: 'gray.200',
-  textTransform: 'uppercase',
-  fontWeight: '500',
-  fontSize: '0.75rem',
-  fontFamily: 'Lexend, sans-serif',
-  textAlign: 'left'
-}
-
-const styleTd: TableCellProps = {
-  padding: '0.75rem 1rem',
-  borderBottom: '1px solid',
-  borderColor: 'gray.100',
-  fontSize: '0.875rem'
-}
-
 export default function Home({ latestEpisodes, allEpisodes }: HomeProps) {
   const { playList } = usePlayer()
 
   const episodeList = [...latestEpisodes, ...allEpisodes]
+
+  const backgroundButtonColorMode = useColorModeValue('white', 'gray.100')
+  const borderColorButtonColorMode = useColorModeValue('gray.100', 'whiteAlpha.500')
+  const backgroundLatestEpisodes = useColorModeValue('white', 'gray.600')
+  const backgroundHomeColorMode = useColorModeValue('', 'gray.700')
+  const borderColorTableColorMode = useColorModeValue('gray.200', 'gray.600')
+  const borderColorLatestEpisodes = useColorModeValue('gray.100', 'whiteAlpha.200')
+  const colorTagHColorMode = useColorModeValue('', 'gray.100')
+  const colorTitleEpisodeColorMode = useColorModeValue('gray.800', 'whiteAlpha.900')
+  const colorInfosEpisodeColorMode = useColorModeValue('gray.200', 'gray.200')
+  const colorTableHeadColorMode = useColorModeValue('gray.200', 'gray.500')
+
+  const styleTh: TableColumnHeaderProps = {
+    padding: '0.75rem 1rem',
+    borderBottom: '1px solid',
+    borderColor: {borderColorTableColorMode},
+    color: {colorTableHeadColorMode},
+    textTransform: 'uppercase',
+    fontWeight: '500',
+    fontSize: '0.75rem',
+    fontFamily: 'Lexend, sans-serif',
+    textAlign: 'left'
+  }
+  
+  const styleTd: TableCellProps = {
+    padding: '0.75rem 1rem',
+    borderBottom: '1px solid',
+    borderColor: 'gray.600',
+    fontSize: '0.875rem'
+  }
 
   return (
     <Box id='homepage' as='div'
       height='calc(100vh - 6.5rem)'
       padding='0 4rem'
       overflowY='scroll'
+
+      background={backgroundHomeColorMode}
     >
       <Head>
         <title>Home | Podcastr</title>
@@ -68,6 +81,8 @@ export default function Home({ latestEpisodes, allEpisodes }: HomeProps) {
         <Box as='h2'
           marginTop='3rem'
           marginBottom='1.5rem'
+
+          color={colorTagHColorMode}
         >
           Últimos lançamentos
         </Box>
@@ -77,7 +92,7 @@ export default function Home({ latestEpisodes, allEpisodes }: HomeProps) {
           gridTemplateColumns='repeat(2, 1fr)'
           gridGap='1.5rem'
           listStyle='none'
-          >
+        >
           {latestEpisodes.map((episode, index) => {
             return (
               <ListItem key={episode.id}
@@ -86,10 +101,12 @@ export default function Home({ latestEpisodes, allEpisodes }: HomeProps) {
                 alignItems='center'
                 padding='1.25rem'
 
-                background='white'
+                background={backgroundLatestEpisodes}
                 border='1px solid'
-                borderColor='gray.100'
+                borderColor={borderColorLatestEpisodes}
                 borderRadius='1.5rem'
+
+                transition='all 200ms'
               >
                 <Box as='div'
                   width='6rem'
@@ -106,12 +123,13 @@ export default function Home({ latestEpisodes, allEpisodes }: HomeProps) {
                 <Box id='episodeDetails' as='div'
                   flex='1'
                   marginLeft='1rem'
+                  color={colorInfosEpisodeColorMode}
                 >
                   <Link href={`/episodes/${episode.id}`}>
                     <LinkChakra as='div'
                       display='block'
 
-                      color='gray.800'
+                      color={colorTitleEpisodeColorMode}
                       fontFamily='Lexend, sans-serif'
                       fontWeight='600'
                       lineHeight='1.4rem'
@@ -171,15 +189,14 @@ export default function Home({ latestEpisodes, allEpisodes }: HomeProps) {
                   right='2rem'
                   bottom='2rem'
 
-                  
                   width='2.5rem'
                   height='2.5rem'
 
                   padding='0'
 
-                  background='white'
+                  background={backgroundButtonColorMode}
                   border='1px solid'
-                  borderColor='gray.100'
+                  borderColor={borderColorButtonColorMode}
                   borderRadius='0.675rem'
                   fontSize='0'
 
@@ -202,16 +219,20 @@ export default function Home({ latestEpisodes, allEpisodes }: HomeProps) {
       </Box>
       <Box id='allEpisodes' as='section'
         paddingBottom='2rem'
+        color={colorTagHColorMode}
+
+        transition='all 200ms'
       >
         <Box as='h2'
           margin='1.7rem 0 2.1rem 0'
+          color={colorTagHColorMode}
         >
           Todos episódios
         </Box>
         <Table cellSpacing={0}
           width='100%'
         >
-          <Thead>
+          <Thead color={colorTableHeadColorMode}>
             <Tr>
               <Th {...styleTh}>
               </Th>
@@ -230,7 +251,7 @@ export default function Home({ latestEpisodes, allEpisodes }: HomeProps) {
               <Th {...styleTh}></Th>
             </Tr>
           </Thead>
-          <Tbody>
+          <Tbody color={colorInfosEpisodeColorMode}>
             {allEpisodes.map((episode, index) => {
               return (
                 <Tr key={episode.id}>
@@ -250,7 +271,7 @@ export default function Home({ latestEpisodes, allEpisodes }: HomeProps) {
                   <Td {...styleTd}>
                     <Link href={`/episodes/${episode.id}`}>
                       <LinkChakra
-                        color='gray.800'
+                        color={colorTitleEpisodeColorMode}
                         fontFamily='Lexend, sans-serif'
                         fontSize='1rem'
                         fontWeight='600'
@@ -281,9 +302,9 @@ export default function Home({ latestEpisodes, allEpisodes }: HomeProps) {
 
                       padding='0'
                       
-                      background='white'
+                      background={backgroundButtonColorMode}
                       border='1px solid'
-                      borderColor='gray.100'
+                      borderColor={borderColorButtonColorMode}
                       borderRadius='0.5rem'
                       fontSize='0'
                       
