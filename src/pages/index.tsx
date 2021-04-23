@@ -47,6 +47,8 @@ export default function Home({ latestEpisodes, allEpisodes }: HomeProps) {
   const colorInfosEpisodeColorMode = useColorModeValue('gray.200', 'gray.200')
   const colorTableHeadColorMode = useColorModeValue('gray.200', 'gray.500')
 
+  const backgroundColorMode = useColorModeValue('#CDCAD3', '#4D4D57')
+
   const styleTh: TableColumnHeaderProps = {
     padding: '0.75rem 1rem',
     borderBottom: '1px solid',
@@ -79,7 +81,7 @@ export default function Home({ latestEpisodes, allEpisodes }: HomeProps) {
           // background: '#494D4B',
         },
         '::-webkit-scrollbar-thumb': {
-          backgroundColor: '#494D4B',
+          backgroundColor: String(backgroundColorMode),
           borderRadius: '16px',
         },
       }}
