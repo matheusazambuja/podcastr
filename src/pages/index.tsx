@@ -1,18 +1,19 @@
-import { useContext } from "react";
 import { GetStaticProps } from "next"
+import Head from "next/head";
 import Image from 'next/image';
 import Link from 'next/link'
 import { format, parseISO } from 'date-fns'
 import ptBR from 'date-fns/locale/pt-BR'
 
 import { api } from "../services/api"
+import { episodes as episodesData } from '../../server.json'
 import { convertDurationToTimeString } from "../utils/convertDurationToTimeString";
-import { PlayerContext } from "../contexts/PlayerContext";
 
 import { Button } from "@chakra-ui/button"
 import { Image as ImageChakra } from "@chakra-ui/image"
 import { Box, Link as LinkChakra,ListItem, Text, UnorderedList } from "@chakra-ui/layout"
 import { Table, TableCellProps, TableColumnHeaderProps, Tbody, Td, Th, Thead, Tr } from "@chakra-ui/react"
+import { usePlayer } from "../contexts/PlayerContext";
 
 // Pode ser feito com type ou interface
 type Episode = {
@@ -51,7 +52,9 @@ const styleTd: TableCellProps = {
 }
 
 export default function Home({ latestEpisodes, allEpisodes }: HomeProps) {
-  const { play } = useContext(PlayerContext)
+  const { playList } = usePlayer()
+
+  const episodeList = [...latestEpisodes, ...allEpisodes]
 
   return (
     <Box id='homepage' as='div'
@@ -59,6 +62,9 @@ export default function Home({ latestEpisodes, allEpisodes }: HomeProps) {
       padding='0 4rem'
       overflowY='scroll'
     >
+      <Head>
+        <title>Home | Podcastr</title>
+      </Head>
       <Box id='latestEpisodes' as='section'>
         <Box as='h2'
           marginTop='3rem'
@@ -73,7 +79,7 @@ export default function Home({ latestEpisodes, allEpisodes }: HomeProps) {
           gridGap='1.5rem'
           listStyle='none'
           >
-          {latestEpisodes.map(episode => {
+          {latestEpisodes.map((episode, index) => {
             return (
               <ListItem key={episode.id}
                 position='relative'
@@ -161,7 +167,7 @@ export default function Home({ latestEpisodes, allEpisodes }: HomeProps) {
                     {episode.durationAsString}
                   </Text>
                 </Box>
-                <Button type='button' onClick={() => play(episode)}
+                <Button type='button' onClick={() => playList(episodeList, index)}
                   position='absolute'
                   right='2rem'
                   bottom='2rem'
@@ -226,7 +232,7 @@ export default function Home({ latestEpisodes, allEpisodes }: HomeProps) {
             </Tr>
           </Thead>
           <Tbody>
-            {allEpisodes.map(episode => {
+            {allEpisodes.map((episode, index) => {
               return (
                 <Tr key={episode.id}>
                   <Td {...styleTd} width='72px'>
@@ -270,7 +276,7 @@ export default function Home({ latestEpisodes, allEpisodes }: HomeProps) {
                     {episode.durationAsString}
                   </Td>
                   <Td {...styleTd}>
-                    <Button type='button'
+                    <Button type='button' onClick={() => playList(episodeList, index + latestEpisodes.length)}
                       width='2rem'
                       height='2rem'
 

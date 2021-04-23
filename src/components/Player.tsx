@@ -1,4 +1,4 @@
-import React, { CSSProperties, useContext, useEffect, useRef } from "react";
+import React, { CSSProperties, useContext, useEffect, useRef, useState } from "react";
 import Image from 'next/image';
 
 import { PlayerContext } from "../contexts/PlayerContext";
@@ -9,16 +9,28 @@ import 'rc-slider/assets/index.css'
 import { Button } from "@chakra-ui/button";
 import { Image as ImageChakra } from "@chakra-ui/image";
 import { Box, Flex, Text } from "@chakra-ui/layout";
+import { ButtonProps } from "@chakra-ui/react";
+import { convertDurationToTimeString } from "../utils/convertDurationToTimeString";
 
 export default function Player() {
   const audioRef = useRef<HTMLAudioElement>(null);
+  const [progress, setProgress] = useState(0);
 
   const {
     episodeList,
     currentEpisodeIndex,
-    isPlaying,
+    toggleLoop,
     togglePlay,
-    setPlayingState
+    toggleShuffle,
+    isLooping,
+    isPlaying,
+    isShuffling,
+    playNext,
+    playPrevious,
+    setPlayingState,
+    hasNext,
+    hasPrevious,
+    clearPlayerState
   } = useContext(PlayerContext);
 
   useEffect(() => {
@@ -33,21 +45,57 @@ export default function Player() {
     }
   }, [isPlaying])
 
+  function setupProgressListener() {
+    audioRef.current.currentTime = 0
+
+    audioRef.current.addEventListener('timeupdate', () => {
+      setProgress(Math.floor(audioRef.current.currentTime));
+    })
+  }
+
+  function handleSeek(amount: number) {
+    audioRef.current.currentTime = amount;
+    setProgress(amount);
+  }
+
+  function handleEpisodeEnded() {
+    if (hasNext) {
+      playNext();
+    } else {
+      clearPlayerState();
+    }
+  }
+
   const episode = episodeList[currentEpisodeIndex];
 
   const styleProgressBooleanPlay = !episode ? { opacity: 0.5 } : {}
-  const styleButtonBoolean = !episode ? {
-    cursor: 'default',
-    opacity: 0.5,
-    _hover: {}
-  } : {
-    _hover: {
-      filter: 'brightness(0.7)'
+  const styleButtonBoolean: ButtonProps = {
+    _disabled: {
+      opacity: 0.5,
+      _hover: {
+        cursor: 'default'
+      },
+      _active: {}
     },
+    _hover: {},
   }
 
+  const styleButtonRepeatActive: ButtonProps = isLooping ? {
+    filter: 'invert(0.35) sepia(1) saturate(3) hue-rotate(100deg)',
+    _hover: {
+      filter: 'brightness(0.6) invert(0.35) sepia(1) saturate(3) hue-rotate(100deg)'
+    }
+  } : {}
+
+  const styleButtonShuffleActive: ButtonProps = isShuffling ? {
+    filter: 'invert(0.35) sepia(1) saturate(3) hue-rotate(100deg)',
+    _hover: {
+      filter: 'brightness(0.6) invert(0.35) sepia(1) saturate(3) hue-rotate(100deg)'
+    }
+  } : {}
+
   const styleSlider: CSSProperties = {
-    padding: 0
+    padding: '0'
   }
 
   return (
@@ -143,8 +191,12 @@ export default function Player() {
           <Text as='span'
             display='inline-block'
             width='4rem'
+
+            marginRight='0.5rem'
             textAlign='center'
-          >00:00</Text>
+          >
+            {convertDurationToTimeString(progress)}
+          </Text>
           <Box as='div'
             flex='1'
             height='4px'
@@ -155,6 +207,9 @@ export default function Player() {
           >
             { episode ? (
               <Slider style={styleSlider}
+                max={episode.duration}
+                value={progress}
+                onChange={handleSeek}
                 trackStyle={{ backgroundColor: '#04D361' }}
                 railStyle={{ backgroundColor: '#9F75FF' }}
                 handleStyle={{ borderColor: '#04D361', borderWidth: 4 }}
@@ -166,17 +221,24 @@ export default function Player() {
           <Text as='span'
             display='inline-block'
             width='4rem'
+
+            marginLeft='0.5rem'
             textAlign='center'
-          >00:00</Text>
+          >
+            {convertDurationToTimeString(episode?.duration ?? 0)}
+          </Text>
         </Flex>
 
         { episode && (
           <audio
             src={episode.url}
             ref={audioRef}
+            loop={isLooping}
             autoPlay
+            onEnded={handleEpisodeEnded}
             onPlay={() => setPlayingState(true)}
             onPause={() => setPlayingState(false)}
+            onLoadedMetadata={setupProgressListener}
           />
         ) }
 
@@ -185,7 +247,8 @@ export default function Player() {
           justifyContent='center'
           marginTop='2.5rem'
         >
-          <Button type='button' disabled={!episode}
+          <Button type='button' onClick={toggleShuffle}
+            disabled={!episode || episodeList.length === 1}
             background='transparent'
             border='0'
             fontSize='0'
@@ -193,10 +256,12 @@ export default function Player() {
             transition='filter 200ms'
 
             {...styleButtonBoolean}
+            {...styleButtonShuffleActive}
           >
             <ImageChakra src='/shuffle.svg' alt='Embaralhar' />
           </Button>
-          <Button type='button' disabled={!episode}
+          <Button type='button' onClick={playPrevious}
+            disabled={!episode || !hasPrevious}
             background='transparent'
             border='0'
             fontSize='0'
@@ -207,7 +272,8 @@ export default function Player() {
           >
             <ImageChakra src='/play-previous.svg' alt='Tocar anterior' />
           </Button>
-          <Button type='button' disabled={!episode} onClick={togglePlay}
+          <Button type='button' onClick={togglePlay}
+            disabled={!episode}
             border='0'
             fontSize='0'
 
@@ -218,11 +284,11 @@ export default function Player() {
 
             transition='filter 200ms'
 
-            {...styleButtonBoolean}
-
             _hover={{
               filter: 'brightness(0.95)'
             }}
+
+            {...styleButtonBoolean}
           >
             { isPlaying ? (
               <ImageChakra src='/pause.svg' alt='Tocar' />
@@ -230,7 +296,8 @@ export default function Player() {
               <ImageChakra src='/play.svg' alt='Tocar' />
             )}
           </Button>
-          <Button type='button' disabled={!episode}
+          <Button type='button' onClick={playNext}
+            disabled={!episode || !hasNext}
             background='transparent'
             border='0'
             fontSize='0'
@@ -241,7 +308,8 @@ export default function Player() {
           >
             <ImageChakra src='/play-next.svg' alt='Tocar próxima' />
           </Button>
-          <Button type='button' disabled={!episode}
+          <Button type='button' onClick={toggleLoop}
+            disabled={!episode}
             background='transparent'
             border='0'
             fontSize='0'
@@ -249,6 +317,7 @@ export default function Player() {
             transition='filter 200ms'
 
             {...styleButtonBoolean}
+            {...styleButtonRepeatActive}
           >
             <ImageChakra src='/repeat.svg' alt='Repetir' />
           </Button>

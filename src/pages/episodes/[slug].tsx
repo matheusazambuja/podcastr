@@ -5,12 +5,13 @@ import { Image as ImageChakra } from '@chakra-ui/image';
 import { format, parseISO } from "date-fns";
 import ptBR from "date-fns/locale/pt-BR";
 import { GetStaticPaths, GetStaticProps } from "next";
+import Head from "next/head";
 import Image from "next/image";
 import React from "react";
 import Link from 'next/link';
-import { useRouter } from 'next/router'
 import { api } from "../../services/api";
 import { convertDurationToTimeString } from "../../utils/convertDurationToTimeString";
+import { usePlayer } from "../../contexts/PlayerContext";
 
 // Pode ser feito com type ou interface
 type Episode = {
@@ -30,12 +31,18 @@ type EpisodesProps = {
 }
 
 export default function Episode({ episode }: EpisodesProps) {
+  const {
+    play
+  } = usePlayer();
   return (
     <Box as='div'
       maxWidth='45rem'
       padding='3rem 2rem'
       margin='0 auto'
     >
+      <Head>
+        <title>{episode.title} | Podcastr</title>
+      </Head>
       <Box as='div'
         position='relative'
       >
@@ -76,7 +83,7 @@ export default function Episode({ episode }: EpisodesProps) {
           />
         </Box>
 
-        <Button type='button'
+        <Button type='button' onClick={() => play(episode)}
           width='3rem'
           height='3rem'
           borderRadius='0.75rem'
