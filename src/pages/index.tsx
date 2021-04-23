@@ -1,15 +1,18 @@
+import { useContext } from "react";
 import { GetStaticProps } from "next"
+import Image from 'next/image';
+import Link from 'next/link'
 import { format, parseISO } from 'date-fns'
 import ptBR from 'date-fns/locale/pt-BR'
+
 import { api } from "../services/api"
 import { convertDurationToTimeString } from "../utils/convertDurationToTimeString";
+import { PlayerContext } from "../contexts/PlayerContext";
 
-import Link from 'next/link'
-import Image from 'next/image';
-import { Box, Link as LinkChakra,ListItem, Text, UnorderedList } from "@chakra-ui/layout"
-import { Image as ImageChakra } from "@chakra-ui/image"
-import { Table, TableCellProps, TableColumnHeaderProps, Tbody, Td, Th, Thead, Tr } from "@chakra-ui/react"
 import { Button } from "@chakra-ui/button"
+import { Image as ImageChakra } from "@chakra-ui/image"
+import { Box, Link as LinkChakra,ListItem, Text, UnorderedList } from "@chakra-ui/layout"
+import { Table, TableCellProps, TableColumnHeaderProps, Tbody, Td, Th, Thead, Tr } from "@chakra-ui/react"
 
 // Pode ser feito com type ou interface
 type Episode = {
@@ -48,10 +51,12 @@ const styleTd: TableCellProps = {
 }
 
 export default function Home({ latestEpisodes, allEpisodes }: HomeProps) {
+  const { play } = useContext(PlayerContext)
+
   return (
     <Box id='homepage' as='div'
-      padding='0 4rem'
       height='calc(100vh - 6.5rem)'
+      padding='0 4rem'
       overflowY='scroll'
     >
       <Box id='latestEpisodes' as='section'>
@@ -63,19 +68,19 @@ export default function Home({ latestEpisodes, allEpisodes }: HomeProps) {
         </Box>
 
         <UnorderedList
-          listStyle='none'
           display='grid'
           gridTemplateColumns='repeat(2, 1fr)'
           gridGap='1.5rem'
-        >
+          listStyle='none'
+          >
           {latestEpisodes.map(episode => {
             return (
               <ListItem key={episode.id}
                 position='relative'
                 display='flex'
                 alignItems='center'
-
                 padding='1.25rem'
+
                 background='white'
                 border='1px solid'
                 borderColor='gray.100'
@@ -100,11 +105,12 @@ export default function Home({ latestEpisodes, allEpisodes }: HomeProps) {
                   <Link href={`/episodes/${episode.id}`}>
                     <LinkChakra as='div'
                       display='block'
+
                       color='gray.800'
                       fontFamily='Lexend, sans-serif'
                       fontWeight='600'
-                      textDecoration='none'
                       lineHeight='1.4rem'
+                      textDecoration='none'
   
                       _hover={{
                         textDecoration: 'underline'
@@ -114,12 +120,13 @@ export default function Home({ latestEpisodes, allEpisodes }: HomeProps) {
                     </LinkChakra>
                   </Link>
                   <Text as='p'
-                    fontSize='0.875rem'
-                    marginTop='0.5rem'
                     maxWidth='70%'
+                    marginTop='0.5rem'
+
+                    fontSize='0.875rem'
                     whiteSpace='nowrap'
-                    overflow='hidden'
                     textOverflow='ellipsis'
+                    overflow='hidden'
                   >
                     {episode.members}
                   </Text>
@@ -132,37 +139,39 @@ export default function Home({ latestEpisodes, allEpisodes }: HomeProps) {
                   </Text>
                   <Text as='span'
                     display='inline-block'
+                    position='relative'
                     marginTop='0.5rem'
-                    fontSize='0.875rem'
-
                     marginLeft='0.5rem'
                     paddingLeft='0.5rem'
-                    position='relative'
+
+                    fontSize='0.875rem'
 
                     _before={{
                       content: '""',
                       width: '4px',
                       height: '4px',
-                      borderRadius: '2px',
-                      background: '#DDDDDD',
                       position: 'absolute',
                       left: '0',
                       top: '50%',
+                      background: '#DDDDDD',
+                      borderRadius: '2px',
                       transform: 'translate(-50%, -50%)'
                     }}
                   >
                     {episode.durationAsString}
                   </Text>
                 </Box>
-                <Button type='button'
+                <Button type='button' onClick={() => play(episode)}
                   position='absolute'
                   right='2rem'
                   bottom='2rem'
 
-                  padding='0'
-
+                  
                   width='2.5rem'
                   height='2.5rem'
+
+                  padding='0'
+
                   background='white'
                   border='1px solid'
                   borderColor='gray.100'
@@ -188,9 +197,10 @@ export default function Home({ latestEpisodes, allEpisodes }: HomeProps) {
       </Box>
       <Box id='allEpisodes' as='section'
         paddingBottom='2rem'
-
       >
-        <Box as='h2'>
+        <Box as='h2'
+          margin='1.7rem 0 2.1rem 0'
+        >
           Todos episódios
         </Box>
         <Table cellSpacing={0}
@@ -237,10 +247,10 @@ export default function Home({ latestEpisodes, allEpisodes }: HomeProps) {
                       <LinkChakra
                         color='gray.800'
                         fontFamily='Lexend, sans-serif'
-                        fontWeight='600'
-                        textDecoration='none'
-                        lineHeight='1.4rem'
                         fontSize='1rem'
+                        fontWeight='600'
+                        lineHeight='1.4rem'
+                        textDecoration='none'
   
                         _hover={{
                           textDecoration: 'underline',
@@ -261,16 +271,17 @@ export default function Home({ latestEpisodes, allEpisodes }: HomeProps) {
                   </Td>
                   <Td {...styleTd}>
                     <Button type='button'
-                      padding='0'
-
                       width='2rem'
                       height='2rem'
+
+                      padding='0'
+                      
                       background='white'
                       border='1px solid'
                       borderColor='gray.100'
                       borderRadius='0.5rem'
                       fontSize='0'
-
+                      
                       transition='filter 200ms'
 
                       _hover={{
