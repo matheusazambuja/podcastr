@@ -8,6 +8,7 @@ import { GetStaticPaths, GetStaticProps } from "next";
 import Image from "next/image";
 import React from "react";
 import Link from 'next/link';
+import { useRouter } from 'next/router'
 import { api } from "../../services/api";
 import { convertDurationToTimeString } from "../../utils/convertDurationToTimeString";
 
@@ -167,12 +168,61 @@ export default function Episode({ episode }: EpisodesProps) {
   )
 }
 
+// Verifica se a página está em carregamento
+// const router = useRouter()
+
+// // Se a página estiver em carregamento
+// if (router.isFallback) {
+//   return <p>Carregando...</p>
+// }
+
 // Necessário para páginas estáticas dinâmicas, ou seja,
 // páginas com getStaticProps: que recarregando seus dados somente
-// algumas vezes por dia e dinâmicas: que possui o conchetes em seu nome.
+// algumas vezes ao dia e que possui parâmetros dinâmicos (possui 
+// conchetes no nome)
+
+// Passando 'paths' vazio, nenhuma página estática dos episódios
+// será gerada.
+
+// Caso algum funcionamento não executar como deveria, talvez a página esteja 
+// em cache dentro do next por já termos acessado antes. É preciso apagar esse
+// cache para ver seu funcionamento corretamente.
+// (Não faço ideia de aonde fica isso para excluir :p)
+
+// Agora, se tivermos 'fallback': false, quando um usuário entrar 
+// em uma página que não foi gerada estaticamento no momento da build,
+// (não foi passado dentro dos paths) retornará '404', ou seja, não encontrado
+//                      Client (browser)
+// Se 'fallback': true, os dados da página serão carregados somente quando o 
+// usuário acessar elas.
+//                      Next.JS (NodeJS)
+// Se 'fallback': 'blocking', os dados serão buscados na camada intermediária,
+// no NodeJS, para melhorar desempenho e indexação da página. Podemos gerar 
+// algumas páginas estáticas, como as mais acessadas, por exemplo, e as outras 
+// buscando seus dados quando acessadas. Entretanto, uma fez carregada seus dados 
+// uma página estática é gerada para os próximos acessos.
+
+// Passando o 'slug', parâmetro dinâmico da página.
+// Gerando estaticamento uma página dinâmica.
 export const getStaticPaths: GetStaticPaths = async () => {
+  const { data } = await api.get('episodes', {
+    params: {
+      _limit: 2,
+      _sort: 'published_at',
+      _order: 'desc'
+    }
+  })
+
+  const paths = data.map(episode => {
+    return {
+      params: {
+        slug: episode.id
+      }
+    }
+  })
+
   return {
-    paths: [],
+    paths,
     fallback: 'blocking'
   }
 }
