@@ -6,7 +6,6 @@ import { format, parseISO } from 'date-fns'
 import ptBR from 'date-fns/locale/pt-BR'
 
 import { api } from "../services/api"
-import { episodes as episodesData } from '../../server.json'
 import { convertDurationToTimeString } from "../utils/convertDurationToTimeString";
 
 import { Button } from "@chakra-ui/button"
