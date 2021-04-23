@@ -38,8 +38,8 @@ export default function Home({ latestEpisodes, allEpisodes }: HomeProps) {
 
   const backgroundButtonColorMode = useColorModeValue('white', 'gray.100')
   const borderColorButtonColorMode = useColorModeValue('gray.100', 'whiteAlpha.500')
-  const backgroundLatestEpisodes = useColorModeValue('white', 'gray.600')
-  const backgroundHomeColorMode = useColorModeValue('', 'gray.700')
+  const backgroundLatestEpisodes = useColorModeValue('white', 'gray.850')
+  const backgroundHomeColorMode = useColorModeValue('', 'gray.830')
   const borderColorTableColorMode = useColorModeValue('gray.200', 'gray.600')
   const borderColorLatestEpisodes = useColorModeValue('gray.100', 'whiteAlpha.200')
   const colorTagHColorMode = useColorModeValue('', 'gray.100')
@@ -62,7 +62,7 @@ export default function Home({ latestEpisodes, allEpisodes }: HomeProps) {
   const styleTd: TableCellProps = {
     padding: '0.75rem 1rem',
     borderBottom: '1px solid',
-    borderColor: 'gray.600',
+    borderColor: {borderColorTableColorMode},
     fontSize: '0.875rem'
   }
 
@@ -71,6 +71,18 @@ export default function Home({ latestEpisodes, allEpisodes }: HomeProps) {
       height='calc(100vh - 6.5rem)'
       padding='0 4rem'
       overflowY='scroll'
+      css={{
+        '::-webkit-scrollbar': {
+          width: '8px',
+        },
+        '::-webkit-scrollbar-track': {
+          // background: '#494D4B',
+        },
+        '::-webkit-scrollbar-thumb': {
+          backgroundColor: '#494D4B',
+          borderRadius: '16px',
+        },
+      }}
 
       background={backgroundHomeColorMode}
     >

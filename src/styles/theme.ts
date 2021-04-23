@@ -14,7 +14,7 @@ export const customTheme = extendTheme({
       },
 
       body: {
-        background: 'gray.50'
+        background: 'gray.50',
       },
 
       'body, input, textarea, button': {
@@ -66,6 +66,9 @@ export const customTheme = extendTheme({
       200: '#AFB2B1',
       500: '#808080',
       800: '#494D4B',
+      830: '#202024',
+      850: '#282A36',
+      900: '#121214'
     },
   
     green: {
