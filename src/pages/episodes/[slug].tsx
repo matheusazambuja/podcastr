@@ -1,4 +1,4 @@
-import { Box } from "@chakra-ui/layout";
+import { Box, Flex } from "@chakra-ui/layout";
 import { Button } from "@chakra-ui/button";
 import { Image as ImageChakra } from '@chakra-ui/image';
 
@@ -12,6 +12,7 @@ import Link from 'next/link';
 import { api } from "../../services/api";
 import { convertDurationToTimeString } from "../../utils/convertDurationToTimeString";
 import { usePlayer } from "../../contexts/PlayerContext";
+import { useColorModeValue } from "@chakra-ui/color-mode";
 
 // Pode ser feito com type ou interface
 type Episode = {
@@ -34,11 +35,19 @@ export default function Episode({ episode }: EpisodesProps) {
   const {
     play
   } = usePlayer();
+
+  const backgroundEpisodeColorMode = useColorModeValue('', 'gray.830')
+  const colorTitleEpisodeColorMode = useColorModeValue('gray.800', 'whiteAlpha.900')
+  const colorInfosEpisodeColorMode = useColorModeValue('gray.200', 'gray.200')
+
   return (
-    <Box as='div'
-      maxWidth='45rem'
-      padding='3rem 2rem'
-      margin='0 auto'
+    <Flex as='div'
+      flexDirection='column'
+      alignItems='center'
+      height='calc(100vh - 6.5rem)'
+      width='100%'
+      padding='4rem 19rem'
+      background={backgroundEpisodeColorMode}
     >
       <Head>
         <title>{episode.title} | Podcastr</title>
@@ -114,10 +123,14 @@ export default function Episode({ episode }: EpisodesProps) {
         paddingBottom='1rem'
         borderBottom='1px solid'
         borderBottomColor='gray.100'
+
+        color={colorInfosEpisodeColorMode}
       >
         <Box as='h1'
           marginTop='2rem'
           marginBottom='1.5rem'
+
+          color={colorTitleEpisodeColorMode}
         >
           {episode.title}
         </Box>
@@ -168,10 +181,10 @@ export default function Episode({ episode }: EpisodesProps) {
         dangerouslySetInnerHTML={{ __html: episode.description}}
         marginTop='2rem'
         lineHeight='1.675rem'
-        color='gray.800'
+        color={colorInfosEpisodeColorMode}
       />
 
-    </Box>
+    </Flex>
   )
 }
 

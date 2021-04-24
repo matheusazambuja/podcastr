@@ -8,6 +8,7 @@ import { Box, Flex } from '@chakra-ui/layout'
 
 import { faMoon, faSun } from '@fortawesome/free-solid-svg-icons'
 import { library } from '@fortawesome/fontawesome-svg-core'
+import { useColorModeValue } from '@chakra-ui/react'
 
 function MyApp({ Component, pageProps }) {
   library.add(
