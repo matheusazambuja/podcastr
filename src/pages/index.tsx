@@ -105,7 +105,7 @@ export default function Home({ latestEpisodes, allEpisodes }: HomeProps) {
           display='grid'
           gridTemplateColumns='repeat(2, 1fr)'
           gridGap='1.5rem'
-          listStyle='none'
+          listStyleType='none'
         >
           {latestEpisodes.map((episode, index) => {
             return (
