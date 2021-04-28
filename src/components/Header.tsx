@@ -17,7 +17,7 @@ export default function Header() {
     <FontAwesomeIcon icon='moon' />,
     <FontAwesomeIcon icon='sun' color='white' />
   )
-  const backgroundHeader = useColorModeValue('white', 'gray.850')
+  const backgroundHeader = useColorModeValue('white', 'gray.800')
   const colorHeader = useColorModeValue('', 'gray.100')
   const backgroundButtonToggleColorMode = useColorModeValue('gray.50', 'transparent')
 
@@ -28,6 +28,7 @@ export default function Header() {
       background={backgroundHeader}
       color={colorHeader}
       height='6.5rem'
+      width={{ base: 'calc(100vw - 1.35rem)', xl2: '100%' }}
       
       padding='2rem 4rem'
       border-bottom='1px solid gray.100'

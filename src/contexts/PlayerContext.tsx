@@ -1,5 +1,6 @@
 import { list } from '@chakra-ui/react';
-import { createContext, ReactNode, useContext, useState } from 'react'
+import Cookies from 'js-cookie';
+import { createContext, ReactNode, useContext, useEffect, useState } from 'react'
 
 type Episode = {
   title: string;
@@ -40,6 +41,18 @@ export function PlayerContextProvider({ children }: PlayerContextProviderProps) 
   const [isPlaying, setIsPlaying] = useState(false);
   const [isLooping, setIsLooping] = useState(false);
   const [isShuffling, setIsShuffling] = useState(false);
+
+  useEffect(() => {
+    const cookiesData = Cookies.getJSON('dataEpisodeCurrent')
+
+    if (!cookiesData) {
+      Cookies.set('dataEpisodeCurrent', JSON.stringify({
+        currentTimeEpisode: 0
+      }))
+
+      return;
+    }
+  }, [])
 
   function play(episode: Episode) {
     setEpisodeList([episode]);

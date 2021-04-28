@@ -38,11 +38,18 @@ export const customTheme = extendTheme({
 
       h2: {
         fontSize: '1.5rem'
+      },
+
+      img: {
+        borderRadius: '10%'
       }
     }
   },
   breakpoints: {
     ...theme.breakpoints,
+    md: '830px',
+    lg: '1080px',
+    xl2: '1450px'
   },
 
   fontWeights: {
@@ -65,7 +72,8 @@ export const customTheme = extendTheme({
       100: '#E6E8EB',
       200: '#AFB2B1',
       500: '#808080',
-      800: '#494D4B',
+      700: '#494D4B',
+      800: '#37474F',
       830: '#202024',
       850: '#282A36',
       900: '#121214'

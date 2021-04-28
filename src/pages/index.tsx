@@ -31,19 +31,22 @@ type HomeProps = {
   allEpisodes: Episode[];
 }
 
-export default function Home({ latestEpisodes, allEpisodes }: HomeProps) {
+export default function Home({
+  latestEpisodes,
+  allEpisodes,
+}: HomeProps) {
   const { playList } = usePlayer()
 
   const episodeList = [...latestEpisodes, ...allEpisodes]
 
   const backgroundButtonColorMode = useColorModeValue('white', 'gray.100')
   const borderColorButtonColorMode = useColorModeValue('gray.100', 'whiteAlpha.500')
-  const backgroundLatestEpisodes = useColorModeValue('white', 'gray.850')
-  const backgroundHomeColorMode = useColorModeValue('', 'gray.830')
+  const backgroundLatestEpisodes = useColorModeValue('white', 'gray.800')
+  const backgroundHomeColorMode = useColorModeValue('', 'gray.850')
   const borderColorTableColorMode = useColorModeValue('gray.200', 'gray.600')
   const borderColorLatestEpisodes = useColorModeValue('gray.100', 'whiteAlpha.200')
   const colorTagHColorMode = useColorModeValue('', 'gray.100')
-  const colorTitleEpisodeColorMode = useColorModeValue('gray.800', 'whiteAlpha.900')
+  const colorTitleEpisodeColorMode = useColorModeValue('gray.700', 'whiteAlpha.900')
   const colorInfosEpisodeColorMode = useColorModeValue('gray.200', 'gray.200')
   const colorTableHeadColorMode = useColorModeValue('gray.200', 'gray.500')
 
@@ -70,12 +73,13 @@ export default function Home({ latestEpisodes, allEpisodes }: HomeProps) {
 
   return (
     <Box id='homepage' as='div'
-      height='calc(100vh - 6.5rem)'
+      height={{ base: '100%', xl2: 'calc(100vh - 6.5rem)' }}
+      width={{ base: 'calc(100vw - 1.35rem)', xl2: 'calc(100vw - 26.5rem)' }}
       padding='0 4rem'
-      overflowY='scroll'
+      overflowY={{ base: 'hidden', xl2: 'scroll' }}
       css={{
         '::-webkit-scrollbar': {
-          width: '8px',
+          width: '0.5rem',
         },
         '::-webkit-scrollbar-track': {
           // background: '#494D4B',
@@ -102,8 +106,11 @@ export default function Home({ latestEpisodes, allEpisodes }: HomeProps) {
         </Box>
 
         <UnorderedList
-          display='grid'
+          display={{ base: 'flex', lg: 'grid' }}
           gridTemplateColumns='repeat(2, 1fr)'
+          flexDirection={{ base: 'column', lg: 'row'}}
+          margin='auto'
+
           gridGap='1.5rem'
           listStyleType='none'
         >
@@ -125,7 +132,6 @@ export default function Home({ latestEpisodes, allEpisodes }: HomeProps) {
                 <Box as='div'
                   width='6rem'
                   height='6rem'
-                  borderRadius='1rem'
                 >
                   <Image src={episode.thumbnail} alt={episode.title}
                     width={192}

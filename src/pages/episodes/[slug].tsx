@@ -37,7 +37,7 @@ export default function Episode({ episode }: EpisodesProps) {
   } = usePlayer();
 
   const backgroundEpisodeColorMode = useColorModeValue('', 'gray.830')
-  const colorTitleEpisodeColorMode = useColorModeValue('gray.800', 'whiteAlpha.900')
+  const colorTitleEpisodeColorMode = useColorModeValue('gray.700', 'whiteAlpha.900')
   const colorInfosEpisodeColorMode = useColorModeValue('gray.200', 'gray.200')
 
   return (
