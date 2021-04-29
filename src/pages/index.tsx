@@ -76,9 +76,9 @@ export default function Home({
   return (
     <Box id='homepage' as='div' gridArea='content'
       height={{ base: '100%', xl2: 'calc(100vh - 6.5rem)' }}
-      width={{ base: 'calc(100vw - 1.35rem)', xl2: 'calc(100vw - 26.5rem)' }}
+      width={{ base: '100%', xl2: 'calc(100vw - 26.5rem)' }}
       padding='0 4rem'
-      overflowY={{ base: 'hidden', xl2: 'scroll' }}
+      overflowY={{ base: 'auto', xl2: 'scroll' }}
       css={{
         '::-webkit-scrollbar': {
           width: '0.5rem',
