@@ -30,7 +30,7 @@ export default function Header() {
 
       background={colorModeObject.backgroundHeader}
       color={colorModeObject.colorHeader}
-      height='6.5rem'
+      height={{ base: '100%', xl2: '6.5rem' }}
       width={{ base: 'calc(100vw - 1.35rem)', xl2: '100%' }}
       
       padding='2rem 4rem'

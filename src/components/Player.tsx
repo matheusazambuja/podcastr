@@ -318,8 +318,8 @@ export default function Player() {
 
   return (
     <Grid as='div' id='player' gridArea='player'
-      templateColumns={{ base: '0.5fr 1.5fr', xl2: '1.6fr' }}
-      templateRows={{ base: '1.2fr 1.1fr 2fr', xl2: '1.1fr 2.2fr 1fr 1.1fr' }}
+      templateColumns={{ base: '0.4fr 1.6fr', xl2: '1.6fr' }}
+      templateRows={{ base: '0.7fr 1.2fr 1.1fr', xl2: '1.1fr 2.2fr 1fr 1.1fr' }}
       templateAreas={{ base: `
         'imageEpisode header'
         'imageEpisode titleEpisode'
@@ -332,20 +332,20 @@ export default function Player() {
     `}}
 
       width={{ base: 'calc(100vw - 1.35rem)', xl2: '26.5rem' }}
-      height={{ base: '20rem', xl2: '100vh' }}
+      height={{ base: '100%', xl2: '100vh' }}
 
-      padding={{ base: '1rem 2rem 0 2rem', xl2: '3rem 4rem' }}
+      padding={{ base: '1rem 2rem 1rem 1rem', xl2: '3rem 4rem' }}
       background='purple.500'
       color='white'
     >
       <Flex as='header' gridArea='header'
         alignItems='center'
         justifyContent='center'
-        marginBottom='1rem'
         {...stylePlayingNow}
       >
         <ImageChakra src='/playing.svg' alt='Tocando agora' />
         <Text as='strong'
+          fontSize='1.4rem'
           fontFamily='Lexend, sans-serif'
           fontWeight='600'
         >
@@ -355,20 +355,19 @@ export default function Player() {
 
       { episode ? (
         <Box as='div' gridArea='imageEpisode'
-          width={{ base: '15rem', xl2: '' }}
+          display='flex'
+          alignItems='center'
+          borderRadius='1.5rem'
+          width={{ base: '15rem', xl2: '18rem' }}
           height={{ base: '17rem', xl2: '' }}
-          margin={{ base: '1.5rem 1.8rem', xl2: '3rem 0' }}
+          margin={{ base: '1.5rem 1.8rem 0 1.8rem', xl2: '3rem 0 4rem 1rem' }}
         >
-          <Box as='div'
-            borderRadius='1.5rem'
-          >
-            <Image 
-              width={592}
-              height={592}
-              src={episode.thumbnail}
-              objectFit="cover"
-            />
-          </Box>
+          <Image
+            width={592}
+            height={592}
+            src={episode.thumbnail}
+            objectFit="cover"
+          />
         </Box>
       ) : (
         <Box as='div' gridArea='imageEpisode' 
@@ -421,7 +420,7 @@ export default function Player() {
       ) : (<></>)}
 
       <Box as='footer' gridArea='sliderControls'
-        alignSelf='stretch'
+        // alignSelf='stretch'
       >
         <Flex as='div'
           alignItems='center'

@@ -49,7 +49,7 @@ export const customTheme = extendTheme({
     ...theme.breakpoints,
     md: '830px',
     lg: '1080px',
-    xl2: '1450px'
+    xl2: '1280px'
   },
 
   fontWeights: {

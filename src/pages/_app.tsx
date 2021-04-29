@@ -4,17 +4,14 @@ import { PlayerContextProvider } from "../contexts/PlayerContext"
 
 import Header from '../components/Header'
 import Player from '../components/Player'
-import { Box, Flex, Grid } from '@chakra-ui/layout'
+import { Grid } from '@chakra-ui/layout'
 import { faMoon, faSun } from '@fortawesome/free-solid-svg-icons'
 import { library } from '@fortawesome/fontawesome-svg-core'
-import { useMediaQuery } from '@chakra-ui/react'
 
 function MyApp({ Component, pageProps }) {
   library.add(
     faMoon, faSun,
   )
-
-  const [isLargerThan1450] = useMediaQuery('(min-width: 1450px)')
 
   return (
     <ThemeContainer cookies={pageProps.cookies}>
