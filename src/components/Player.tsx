@@ -96,8 +96,7 @@ export default function Player() {
   }
 
   const stylePlayingNow = episode ? {} : {
-    opacity: 0.5,
-    marginBottom: '3.5rem'
+    opacity: 0.5
   }
 
   const styleButtonRepeatActive: ButtonProps = isLooping ? {
@@ -143,6 +142,7 @@ export default function Player() {
       <Flex as='header' gridArea='header'
         alignItems='center'
         justifyContent='center'
+        marginBottom='1rem'
         {...stylePlayingNow}
       >
         <ImageChakra src='/playing.svg' alt='Tocando agora' />
@@ -162,7 +162,7 @@ export default function Player() {
           borderRadius='1.5rem'
           width={{ base: '15rem', xl2: '18rem' }}
           height={{ base: '17rem', xl2: '' }}
-          margin={{ base: '1.5rem 1.8rem 0 1.8rem', xl2: '3rem 0 4rem 1rem' }}
+          margin={{ base: 'auto 1.5rem auto 1rem', xl2: '3rem 0 4rem 1rem' }}
         >
           <Image
             width={592}
