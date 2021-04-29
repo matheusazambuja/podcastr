@@ -72,6 +72,16 @@ $ npm run dev
 
 The app will be available for access on your browser at `http://localhost:3000`
 
+---
+
+## Support
+
+Reach out to me at one of the following places!
+
+- Linkedin at [Matheus Azambuja](https://www.linkedin.com/in/matheus-azambuja-9197411a1/)
+- Instagram [MatheusAzambuja](https://www.instagram.com/salve_mth5/)
+
+---
 ## 📝 License
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
