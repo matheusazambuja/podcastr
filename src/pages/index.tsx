@@ -5,14 +5,15 @@ import Link from 'next/link'
 import { format, parseISO } from 'date-fns'
 import ptBR from 'date-fns/locale/pt-BR'
 
-import { api } from "../services/api"
-import { convertDurationToTimeString } from "../utils/convertDurationToTimeString";
-
 import { Button } from "@chakra-ui/button"
 import { Image as ImageChakra } from "@chakra-ui/image"
 import { Box, Link as LinkChakra,ListItem, Text, UnorderedList } from "@chakra-ui/layout"
 import { Table, TableCellProps, TableColumnHeaderProps, Tbody, Td, Th, Thead, Tr, useColorModeValue } from "@chakra-ui/react"
+
+import { api } from "../services/api"
+import { convertDurationToTimeString } from "../utils/convertDurationToTimeString";
 import { usePlayer } from "../contexts/PlayerContext";
+
 
 // Pode ser feito com type ou interface
 type Episode = {
@@ -35,28 +36,29 @@ export default function Home({
   latestEpisodes,
   allEpisodes,
 }: HomeProps) {
-  const { playList } = usePlayer()
 
+  const { playList } = usePlayer()
   const episodeList = [...latestEpisodes, ...allEpisodes]
 
-  const backgroundButtonColorMode = useColorModeValue('white', 'gray.100')
-  const borderColorButtonColorMode = useColorModeValue('gray.100', 'whiteAlpha.500')
-  const backgroundLatestEpisodes = useColorModeValue('white', 'gray.800')
-  const backgroundHomeColorMode = useColorModeValue('', 'gray.850')
-  const borderColorTableColorMode = useColorModeValue('gray.200', 'gray.600')
-  const borderColorLatestEpisodes = useColorModeValue('gray.100', 'whiteAlpha.200')
-  const colorTagHColorMode = useColorModeValue('', 'gray.100')
-  const colorTitleEpisodeColorMode = useColorModeValue('gray.700', 'whiteAlpha.900')
-  const colorInfosEpisodeColorMode = useColorModeValue('gray.200', 'gray.200')
-  const colorTableHeadColorMode = useColorModeValue('gray.200', 'gray.500')
-
-  const backgroundColorMode = useColorModeValue('#CDCAD3', '#4D4D57')
+  const colorModeObject = {
+    backgroundButton: useColorModeValue('white', 'gray.100'),
+    backgroundHome: useColorModeValue('gray.50', 'gray.850'),
+    backgroundLatestEpisodes: useColorModeValue('white', 'gray.800'),
+    backgroundScrollBar: useColorModeValue('#CDCAD3', '#4D4D57'),
+    borderColorButton: useColorModeValue('gray.100', 'whiteAlpha.500'),
+    borderColorLatestEpisodes: useColorModeValue('gray.100', 'whiteAlpha.200'),
+    borderColorTable: useColorModeValue('gray.200', 'gray.600'),
+    colorInfosEpisode: useColorModeValue('gray.200', 'gray.200'),
+    colorTableHead: useColorModeValue('gray.200', 'gray.500'),
+    colorTagH: useColorModeValue('gray.800', 'gray.100'),
+    colorTitleEpisode: useColorModeValue('gray.700', 'whiteAlpha.900'),
+  }
 
   const styleTh: TableColumnHeaderProps = {
     padding: '0.75rem 1rem',
     borderBottom: '1px solid',
-    borderColor: {borderColorTableColorMode},
-    color: {colorTableHeadColorMode},
+    borderColor: colorModeObject.borderColorTable,
+    color: colorModeObject.colorTableHead,
     textTransform: 'uppercase',
     fontWeight: '500',
     fontSize: '0.75rem',
@@ -67,12 +69,12 @@ export default function Home({
   const styleTd: TableCellProps = {
     padding: '0.75rem 1rem',
     borderBottom: '1px solid',
-    borderColor: {borderColorTableColorMode},
+    borderColor: colorModeObject.borderColorTable,
     fontSize: '0.875rem'
   }
 
   return (
-    <Box id='homepage' as='div'
+    <Box id='homepage' as='div' gridArea='content'
       height={{ base: '100%', xl2: 'calc(100vh - 6.5rem)' }}
       width={{ base: 'calc(100vw - 1.35rem)', xl2: 'calc(100vw - 26.5rem)' }}
       padding='0 4rem'
@@ -85,12 +87,12 @@ export default function Home({
           // background: '#494D4B',
         },
         '::-webkit-scrollbar-thumb': {
-          backgroundColor: String(backgroundColorMode),
+          backgroundColor: String(colorModeObject.backgroundScrollBar),
           borderRadius: '16px',
         },
       }}
 
-      background={backgroundHomeColorMode}
+      background={colorModeObject.backgroundHome}
     >
       <Head>
         <title>Home | Podcastr</title>
@@ -100,7 +102,7 @@ export default function Home({
           marginTop='3rem'
           marginBottom='1.5rem'
 
-          color={colorTagHColorMode}
+          color={colorModeObject.colorTagH}
         >
           Últimos lançamentos
         </Box>
@@ -122,9 +124,9 @@ export default function Home({
                 alignItems='center'
                 padding='1.25rem'
 
-                background={backgroundLatestEpisodes}
+                background={colorModeObject.backgroundLatestEpisodes}
                 border='1px solid'
-                borderColor={borderColorLatestEpisodes}
+                borderColor={colorModeObject.borderColorLatestEpisodes}
                 borderRadius='1.5rem'
 
                 transition='all 200ms'
@@ -143,13 +145,13 @@ export default function Home({
                 <Box id='episodeDetails' as='div'
                   flex='1'
                   marginLeft='1rem'
-                  color={colorInfosEpisodeColorMode}
+                  color={colorModeObject.colorInfosEpisode}
                 >
                   <Link href={`/episodes/${episode.id}`}>
                     <LinkChakra as='div'
                       display='block'
 
-                      color={colorTitleEpisodeColorMode}
+                      color={colorModeObject.colorTitleEpisode}
                       fontFamily='Lexend, sans-serif'
                       fontWeight='600'
                       lineHeight='1.4rem'
@@ -214,9 +216,9 @@ export default function Home({
 
                   padding='0'
 
-                  background={backgroundButtonColorMode}
+                  background={colorModeObject.backgroundButton}
                   border='1px solid'
-                  borderColor={borderColorButtonColorMode}
+                  borderColor={colorModeObject.borderColorButton}
                   borderRadius='0.675rem'
                   fontSize='0'
 
@@ -239,20 +241,20 @@ export default function Home({
       </Box>
       <Box id='allEpisodes' as='section'
         paddingBottom='2rem'
-        color={colorTagHColorMode}
+        color={colorModeObject.colorTagH}
 
         transition='all 200ms'
       >
         <Box as='h2'
           margin='1.7rem 0 2.1rem 0'
-          color={colorTagHColorMode}
+          color={colorModeObject.colorTagH}
         >
           Todos episódios
         </Box>
         <Table cellSpacing={0}
           width='100%'
         >
-          <Thead color={colorTableHeadColorMode}>
+          <Thead color={colorModeObject.colorTableHead}>
             <Tr>
               <Th {...styleTh}>
               </Th>
@@ -271,7 +273,7 @@ export default function Home({
               <Th {...styleTh}></Th>
             </Tr>
           </Thead>
-          <Tbody color={colorInfosEpisodeColorMode}>
+          <Tbody color={colorModeObject.colorInfosEpisode}>
             {allEpisodes.map((episode, index) => {
               return (
                 <Tr key={episode.id}>
@@ -291,7 +293,7 @@ export default function Home({
                   <Td {...styleTd}>
                     <Link href={`/episodes/${episode.id}`}>
                       <LinkChakra
-                        color={colorTitleEpisodeColorMode}
+                        color={colorModeObject.colorTitleEpisode}
                         fontFamily='Lexend, sans-serif'
                         fontSize='1rem'
                         fontWeight='600'
@@ -322,9 +324,9 @@ export default function Home({
 
                       padding='0'
                       
-                      background={backgroundButtonColorMode}
+                      background={colorModeObject.backgroundButton}
                       border='1px solid'
-                      borderColor={borderColorButtonColorMode}
+                      borderColor={colorModeObject.borderColorButton}
                       borderRadius='0.5rem'
                       fontSize='0'
                       
@@ -378,8 +380,8 @@ export const getStaticProps: GetStaticProps = async () => {
     }
   })
 
-  const latestEpisodes = episodes.slice(0, 2)
-  const allEpisodes = episodes.slice(2, episodes.length)
+  const latestEpisodes = episodes.slice(0, 2);
+  const allEpisodes = episodes.slice(2, episodes.length);
 
   return {
     props: {

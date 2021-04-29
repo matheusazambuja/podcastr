@@ -1,18 +1,19 @@
-import { Box, Flex } from "@chakra-ui/layout";
-import { Button } from "@chakra-ui/button";
-import { Image as ImageChakra } from '@chakra-ui/image';
-
-import { format, parseISO } from "date-fns";
-import ptBR from "date-fns/locale/pt-BR";
 import { GetStaticPaths, GetStaticProps } from "next";
 import Head from "next/head";
 import Image from "next/image";
 import React from "react";
 import Link from 'next/link';
+import { format, parseISO } from "date-fns";
+import ptBR from "date-fns/locale/pt-BR";
+
+import { Box, Flex } from "@chakra-ui/layout";
+import { Button } from "@chakra-ui/button";
+import { Image as ImageChakra } from '@chakra-ui/image';
+import { useColorModeValue } from "@chakra-ui/color-mode";
+
 import { api } from "../../services/api";
 import { convertDurationToTimeString } from "../../utils/convertDurationToTimeString";
 import { usePlayer } from "../../contexts/PlayerContext";
-import { useColorModeValue } from "@chakra-ui/color-mode";
 
 // Pode ser feito com type ou interface
 type Episode = {

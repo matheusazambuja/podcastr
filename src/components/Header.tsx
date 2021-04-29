@@ -1,11 +1,11 @@
 import format from 'date-fns/format'
 import ptBR from 'date-fns/locale/pt-BR'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 
-import { Image } from "@chakra-ui/image";
-import { Flex, Text } from "@chakra-ui/layout";
-import { useColorMode, useColorModeValue } from '@chakra-ui/color-mode';
 import { Button } from '@chakra-ui/button';
+import { Flex, Text } from "@chakra-ui/layout";
+import { Image } from "@chakra-ui/image";
+import { useColorMode, useColorModeValue } from '@chakra-ui/color-mode';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 
 export default function Header() {
   const currentDate = format(new Date(), 'EEEEEE, d MMMM', {
@@ -13,20 +13,23 @@ export default function Header() {
   })
 
   const { colorMode, toggleColorMode } = useColorMode()
-  const iconButtonToggleColorMode = useColorModeValue(
-    <FontAwesomeIcon icon='moon' />,
-    <FontAwesomeIcon icon='sun' color='white' />
-  )
-  const backgroundHeader = useColorModeValue('white', 'gray.800')
-  const colorHeader = useColorModeValue('', 'gray.100')
-  const backgroundButtonToggleColorMode = useColorModeValue('gray.50', 'transparent')
+  
+  const colorModeObject = {
+    iconButtonToggle: useColorModeValue(
+      <FontAwesomeIcon icon='moon' />,
+      <FontAwesomeIcon icon='sun' color='white' />
+    ),
+    backgroundButtonToggle: useColorModeValue('gray.50', 'transparent'),
+    backgroundHeader:useColorModeValue('white', 'gray.800'),
+    colorHeader: useColorModeValue('', 'gray.100')
+  }
 
   return (
-    <Flex as='header'
+    <Flex as='header' gridArea='header'
       alignItems='center'
 
-      background={backgroundHeader}
-      color={colorHeader}
+      background={colorModeObject.backgroundHeader}
+      color={colorModeObject.colorHeader}
       height='6.5rem'
       width={{ base: 'calc(100vw - 1.35rem)', xl2: '100%' }}
       
@@ -52,7 +55,7 @@ export default function Header() {
       </Text>
       <Button onClick={toggleColorMode}
         marginLeft="1.2rem"
-        background={backgroundButtonToggleColorMode}
+        background={colorModeObject.backgroundButtonToggle}
 
         transition="all 200ms"
         _hover={{
@@ -60,7 +63,7 @@ export default function Header() {
           cursor: "pointer"
         }}
       >
-        {iconButtonToggleColorMode}
+        {colorModeObject.iconButtonToggle}
       </Button>
     </Flex>
   )
